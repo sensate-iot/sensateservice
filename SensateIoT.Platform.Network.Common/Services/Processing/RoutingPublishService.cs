@@ -39,7 +39,7 @@ namespace SensateIoT.Platform.Network.Common.Services.Processing
 		{
 			await Task.WhenAll(this.m_internalRemote.FlushAsync(),
 							   this.m_internalRemote.FlushLiveDataAsync(),
-							   this.m_eventQueue.FlushEventsAsync(token),
+							   this.m_eventQueue.FlushEventsAsync(),
 							   this.m_remoteStorageQueue.FlushMessagesAsync()).ConfigureAwait(false);
 		}
 	}

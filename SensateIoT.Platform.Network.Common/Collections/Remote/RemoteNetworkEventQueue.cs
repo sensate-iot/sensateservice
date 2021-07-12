@@ -7,7 +7,6 @@
 
 using System.IO;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 
 using Microsoft.Extensions.Options;
@@ -47,7 +46,7 @@ namespace SensateIoT.Platform.Network.Common.Collections.Remote
 			this.m_gauge.Inc();
 		}
 
-		public async Task FlushEventsAsync(CancellationToken ct = default)
+		public async Task FlushEventsAsync()
 		{
 			this.m_gauge.Set(0D);
 			var messages = this.m_events.DequeueRange(int.MaxValue).ToList();
