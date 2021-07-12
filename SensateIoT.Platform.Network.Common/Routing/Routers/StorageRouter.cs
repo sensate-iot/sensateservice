@@ -17,6 +17,8 @@ namespace SensateIoT.Platform.Network.Common.Routing.Routers
 	{
 		private readonly IRemoteStorageQueue m_storageQueue;
 
+		public string Name => "Storage Router";
+
 		public StorageRouter(IRemoteStorageQueue queue)
 		{
 			this.m_storageQueue = queue;

@@ -1,5 +1,5 @@
 ﻿using System;
-using Microsoft.Extensions.Logging;
+
 using SensateIoT.Platform.Network.Common.Routing.Abstract;
 using SensateIoT.Platform.Network.Contracts.DTO;
 using SensateIoT.Platform.Network.Data.Abstract;
@@ -12,6 +12,8 @@ namespace SensateIoT.Platform.Network.Tests.Routing
 		public bool Executed { get; private set; }
 		public bool Cancel { get; set; }
 		public Exception Exception { get; set; }
+
+		public string Name => "Control Message Router";
 
 		public RouterStub()
 		{

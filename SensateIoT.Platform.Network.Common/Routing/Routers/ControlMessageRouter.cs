@@ -33,6 +33,8 @@ namespace SensateIoT.Platform.Network.Common.Routing.Routers
 
 		private const string FormatNeedle = "$id";
 
+		public string Name => "Control Message Router";
+
 		public ControlMessageRouter(IPublicRemoteQueue remote,
 									IOptions<RoutingPublishSettings> settings,
 									ILogger<ControlMessageRouter> logger,

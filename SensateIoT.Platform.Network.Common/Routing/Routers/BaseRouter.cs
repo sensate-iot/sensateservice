@@ -22,6 +22,8 @@ namespace SensateIoT.Platform.Network.Common.Routing.Routers
 			this.m_logger = logger;
 		}
 
+		public string Name => "Base Router";
+
 		public bool Route(Sensor sensor, IPlatformMessage message, NetworkEvent networkEvent)
 		{
 			var result = true;

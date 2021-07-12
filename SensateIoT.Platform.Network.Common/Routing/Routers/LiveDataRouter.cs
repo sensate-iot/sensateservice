@@ -23,6 +23,8 @@ namespace SensateIoT.Platform.Network.Common.Routing.Routers
 		private readonly ILogger<LiveDataRouter> m_logger;
 		private readonly IInternalRemoteQueue m_internalQueue;
 
+		public string Name => "Live Data Router";
+
 		public LiveDataRouter(ILogger<LiveDataRouter> logger, IInternalRemoteQueue queue)
 		{
 			this.m_internalQueue = queue;

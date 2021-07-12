@@ -13,6 +13,7 @@ namespace SensateIoT.Platform.Network.Common.Routing.Abstract
 {
 	public interface IRouter
 	{
+		public string Name { get; }
 		bool Route(Sensor sensor, IPlatformMessage message, NetworkEvent networkEvent);
 	}
 }

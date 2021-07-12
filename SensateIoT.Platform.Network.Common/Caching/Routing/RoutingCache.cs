@@ -61,6 +61,42 @@ namespace SensateIoT.Platform.Network.Common.Caching.Routing
 			set => this.InsertSensor(id, value);
 		}
 
+		public Account GetAccount(Guid id)
+		{
+			Account result;
+
+			this.CheckDisposed();
+			this.m_lock.EnterReadLock();
+
+			try {
+				if(!this.m_accounts.TryGetValue(id, out result)) {
+					return null;
+				}
+			} finally {
+				this.m_lock.ExitReadLock();
+			}
+
+			return result;
+		}
+
+		public ApiKey GetApiKey(string key)
+		{
+			ApiKey result;
+
+			this.CheckDisposed();
+			this.m_lock.EnterReadLock();
+
+			try {
+				if(!this.m_sensorKeys.TryGetValue(key, out result)) {
+					return null;
+				}
+			} finally {
+				this.m_lock.ExitReadLock();
+			}
+
+			return result;
+		}
+
 		public void Load(IEnumerable<Sensor> sensors)
 		{
 			this.CheckDisposed();
@@ -337,19 +373,9 @@ namespace SensateIoT.Platform.Network.Common.Caching.Routing
 			this.m_lock.EnterReadLock();
 
 			try {
-				if(!this.m_sensors.TryGetValue(id, out var sensor)) {
+				if(!this.m_sensors.TryGetValue(id, out result)) {
 					this.m_logger.LogWarning("Unable to find sensor with ID: {sensorId}.", id.ToString());
 					return null;
-				}
-
-				var account = this.m_accounts[sensor.AccountID];
-				var key = this.m_sensorKeys[sensor.SensorKey];
-
-				result = null;
-
-				if(this.IsValidSensor(sensor, account, key)) {
-					this.m_logger.LogDebug("Found sensor with ID {sensorId}.", id.ToString());
-					result = sensor;
 				}
 			} catch(KeyNotFoundException ex) {
 				this.m_logger.LogWarning(ex, "Unable to find account or key for sensor {sensorId}.", id.ToString());
@@ -359,36 +385,6 @@ namespace SensateIoT.Platform.Network.Common.Caching.Routing
 			}
 
 			return result;
-		}
-
-		private bool IsValidSensor(Sensor sensor, Account account, ApiKey key)
-		{
-			bool invalid;
-
-			invalid = this.ValidateAccount(sensor, account, key);
-
-			invalid |= key.IsReadOnly;
-			invalid |= key.IsRevoked;
-
-			return !invalid;
-		}
-
-		private bool ValidateAccount(Sensor sensor, Account account, ApiKey key)
-		{
-			var invalid = false;
-
-			if(account.HasBillingLockout) {
-				this.m_logger.LogInformation("Skipping sensor {sensorId} due to billing lock!", sensor.ID.ToString());
-				invalid = true;
-			}
-
-			if(account.IsBanned) {
-				this.m_logger.LogInformation("Skipping sensor because account {accountId:D} is banned!", account.ID);
-				invalid = true;
-			}
-
-			invalid |= account.ID != key.AccountID;
-			return invalid;
 		}
 
 		private void AddLiveDataRouting(LiveDataRoute route)

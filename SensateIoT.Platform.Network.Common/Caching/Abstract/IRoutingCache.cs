@@ -21,6 +21,8 @@ namespace SensateIoT.Platform.Network.Common.Caching.Abstract
 	public interface IRoutingCache : IDisposable
 	{
 		Sensor this[ObjectId id] { get; set; }
+		Account GetAccount(Guid id);
+		ApiKey GetApiKey(string key);
 
 		void Load(IEnumerable<Sensor> sensors);
 		void Load(IEnumerable<Account> accounts);
