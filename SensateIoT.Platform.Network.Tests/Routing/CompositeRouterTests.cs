@@ -26,9 +26,9 @@ namespace SensateIoT.Platform.Network.Tests.Routing
 	[TestClass]
 	public class CompositeRouterTests
 	{
-		private static readonly Sensor Sensor = new Sensor { ID = ObjectId.GenerateNewId(), AccountID = Guid.NewGuid(), SensorKey = "Abcd"};
-		private static readonly Account Account = new Account {ID = Sensor.AccountID};
-		private static readonly ApiKey ApiKey = new ApiKey {AccountID = Sensor.AccountID};
+		private static readonly Sensor Sensor = new Sensor { ID = ObjectId.GenerateNewId(), AccountID = Guid.NewGuid(), SensorKey = "Abcd" };
+		private static readonly Account Account = new Account { ID = Sensor.AccountID };
+		private static readonly ApiKey ApiKey = new ApiKey { AccountID = Sensor.AccountID };
 
 		[TestMethod]
 		public void CanExecuteRouters()
@@ -51,6 +51,62 @@ namespace SensateIoT.Platform.Network.Tests.Routing
 			Assert.IsTrue(r1.Executed);
 			Assert.IsTrue(r2.Executed);
 			Assert.IsTrue(r3.Executed);
+		}
+
+		[TestMethod]
+		public void CannotRouteFromBannedAccount()
+		{
+		}
+
+		[TestMethod]
+		public void CannotRouteBillingLockedAccount()
+		{
+		}
+
+		[TestMethod]
+		public void CannotRouteWithReadOnlyKey()
+		{
+
+		}
+
+		[TestMethod]
+		public void CannotRouteWithRevokedKey()
+		{
+
+		}
+
+		[TestMethod]
+		public void CannotRouteWithoutAccount()
+		{
+		}
+
+		[TestMethod]
+		public void CannotRouteWithoutSensorKey()
+		{
+		}
+
+		[TestMethod]
+		public void SensorCannotBeNull()
+		{
+			var router = CreateCompositeRouter();
+
+			var r1 = new RouterStub();
+			var r2 = new RouterStub();
+			var r3 = new RouterStub();
+
+			router.AddRouter(r1);
+			router.AddRouter(r2);
+			router.AddRouter(r3);
+
+			var msg = new Message {
+				SensorId = ObjectId.GenerateNewId()
+			};
+
+			router.Route(AsList(msg));
+
+			Assert.IsFalse(r1.Executed);
+			Assert.IsFalse(r2.Executed);
+			Assert.IsFalse(r3.Executed);
 		}
 
 		[TestMethod]
