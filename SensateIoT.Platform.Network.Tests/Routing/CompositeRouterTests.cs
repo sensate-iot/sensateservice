@@ -26,7 +26,9 @@ namespace SensateIoT.Platform.Network.Tests.Routing
 	[TestClass]
 	public class CompositeRouterTests
 	{
-		private static readonly Sensor Sensor = new Sensor { ID = ObjectId.GenerateNewId() };
+		private static readonly Sensor Sensor = new Sensor { ID = ObjectId.GenerateNewId(), AccountID = Guid.NewGuid(), SensorKey = "Abcd"};
+		private static readonly Account Account = new Account {ID = Sensor.AccountID};
+		private static readonly ApiKey ApiKey = new ApiKey {AccountID = Sensor.AccountID};
 
 		[TestMethod]
 		public void CanExecuteRouters()
@@ -146,6 +148,8 @@ namespace SensateIoT.Platform.Network.Tests.Routing
 			var cache = new Mock<IRoutingCache>();
 
 			cache.Setup(x => x[Sensor.ID]).Returns(Sensor);
+			cache.Setup(x => x.GetAccount(Account.ID)).Returns(Account);
+			cache.Setup(x => x.GetApiKey(Sensor.SensorKey)).Returns(ApiKey);
 			return cache.Object;
 		}
 
