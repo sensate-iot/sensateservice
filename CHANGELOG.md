@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+### Added
+- Logging statements in the composite router
+- Name property on the `IRouter` interface
+
+### Updated
+- Routing cache
+- Composite routing rules
+- Routing code quality
+
+### Removed
+- Unused code
+
 ## [1.7.3] - 10-07-2021
 ### Added
 - Additional logging
